@@ -1,0 +1,17 @@
+<input name="file" id="file" type="file"/>
+<button style="display: none;" id="button">Upload</button>
+
+<script src="uploadFile.js"></script>
+<script>
+  let uploadButton = document.getElementById('button');
+  let inputElement = document.getElementById('file');
+
+  // init Listeners
+  inputElement.onchange = event => {
+    const file = inputElement.files[0];
+    uploadButton.addEventListener('click', event => uploadFile(file));
+
+    // display button when user selects file
+    uploadButton.style.display = 'inline';
+  }
+</script>
