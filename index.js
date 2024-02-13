@@ -40,7 +40,7 @@ const document = dom.window.document;
 const listingPath = path.join(__dirname, "files");
 app.get("/files", (req, res) => {
   console.log(req.path, listingPath)
-  const filePath = path.join(listingPath, req.path);
+  const filePath = path.join('/');
 
   // if (!fs.existsSync(filePath)) {
   //   return res.status(404).end();
