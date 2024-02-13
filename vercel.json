@@ -16,10 +16,6 @@
       "dest": "index.js"
     },
     {
-      "src": "/",
-      "dest": "myServe/index.html"
-  },
-    {
       "src": "/(.+)",
       "dest": "files/$1"
     }
