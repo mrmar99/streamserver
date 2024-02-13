@@ -41,9 +41,9 @@ const listingPath = path.join(__dirname, "files");
 app.get("/files", (req, res) => {
   const filePath = path.join(listingPath, req.path);
 
-  if (!fs.existsSync(filePath)) {
-    return res.status(404).end();
-  }
+  // if (!fs.existsSync(filePath)) {
+  //   return res.status(404).end();
+  // }
 
   const videoExtensions = new Set([
     ".mp4",
