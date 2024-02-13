@@ -37,9 +37,9 @@ const myServe = fs.readFileSync(
 const dom = new JSDOM(myServe);
 const document = dom.window.document;
 
-const listingPath = "/";
+const listingPath = path.join(__dirname, "files");
 app.get("/files", (req, res) => {
-  const filePath = path.join(listingPath, req.path);
+  const filePath = express.static(path.join(listingPath, req.path));
   console.log(filePath)
 
   // if (!fs.existsSync(filePath)) {
