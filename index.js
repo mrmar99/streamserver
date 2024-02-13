@@ -127,7 +127,7 @@ app.use("/files", (req, res) => {
   }
 });
 
-app.post("/create-folder", (req, res) => {
+app.post("/api/create-folder", (req, res) => {
   const folderPath = path.join(__dirname, req.body.folderPath);
   const newFolderName = req.body.newFolderName;
 
@@ -147,11 +147,11 @@ app.post("/create-folder", (req, res) => {
   }
 });
 
-app.post("/upload", upload.single("file"), (req, res) => {
+app.post("/api/upload", upload.single("file"), (req, res) => {
   return res.status(200).send("Файл успешно загружен");
 });
 
-app.post("/delete", (req, res) => {
+app.post("/api/delete", (req, res) => {
   const filePath = path.join(__dirname, req.body.filePath);
 
   try {
@@ -169,7 +169,7 @@ app.post("/delete", (req, res) => {
   }
 });
 
-app.post("/update", (req, res) => {
+app.post("/api/update", (req, res) => {
   const filePath = path.join(__dirname, req.body.filePath);
   const newName = req.body.newName;
 

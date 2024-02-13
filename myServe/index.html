@@ -267,7 +267,7 @@
 
         if (newFolderName) {
           const folderPath = window.location.pathname.replaceAll(' ', '+');
-          const response = await fetch("/create-folder", {
+          const response = await fetch("/api/create-folder", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -302,7 +302,7 @@
           formData.append("folderPath", folderPath);
           formData.append("file", file);
 
-          const response = await fetch("/upload", {
+          const response = await fetch("/api/upload", {
             method: "POST",
             body: formData
           });
@@ -318,7 +318,7 @@
 
       confirmDeleteBtn.addEventListener("click", async () => {
         const filePath = deleteTarget.getAttribute("href");
-        const response = await fetch("/delete", {
+        const response = await fetch("/api/delete", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -351,7 +351,7 @@
             targetElement.textContent = newName;
 
             const filePath = targetElement.getAttribute("href");
-            const response = await fetch("/update", {
+            const response = await fetch("/api/update", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
