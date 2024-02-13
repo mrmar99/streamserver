@@ -38,9 +38,9 @@ const dom = new JSDOM(myServe);
 const document = dom.window.document;
 
 const listingPath = path.join(__dirname, "files");
-app.get("/files", (req, res) => {
+app.use("/files", (req, res) => {
   console.log(req.path, listingPath)
-  const filePath = path.join('/');
+  const filePath = path.join(listingPath, req.path);
 
   // if (!fs.existsSync(filePath)) {
   //   return res.status(404).end();
