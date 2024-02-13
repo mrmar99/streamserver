@@ -7,7 +7,7 @@
     },
     { 
       "source": "/files/(.*)", 
-      "destination": "/files"
+      "destination": "/"
     }
   ]
 }
