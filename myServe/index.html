@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="confirmationModal" style="display: none;">
+    <span>Вы уверены, что хотите удалить этот файл или папку?</span>
+    <div style="display: flex;gap:10px;">
+      <button id="confirmDeleteBtn">Да</button>
+      <button id="cancelDeleteBtn">Отмена</button>
+    </div>
+  </div>
+  <div class="container">
+    <div class="controls">
+      <div class="btn create-folder">📁 Создать папку</div>
+      <div class="btn upload">💾 Загрузить файл</div>
+      <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" id="fileInput" data-folderPath="" style="display:none;">
+        <input type="hidden" name="folderPath" id="folderPathInput" value="">
+      </form>
+    </div>
+    <div class="files">
+      <a class="item home">🏠 Главная</a>
+      <a class="item back">⬅️ Назад</a>
+      <div class="files-row">
+        <a class="item dir">Better Call Saul</a>
+        <span class="item-edit">🖊️</span>
+        <span class="item-delete">❌</span>
+      </div>
+      <div class="files-row">
+        <a class="item dir">Breaking Bad</a>
+        <span class="item-edit">🖊️</span>
+        <span class="item-delete">❌</span>
+      </div>
+      <div class="files-row">
+        <a class="item dir">True Detective</a>
+        <span class="item-edit">🖊️</span>
+        <span class="item-delete">❌</span>
+      </div>
+      <div class="files-row">
+        <a class="item dir">Big Bang Theory</a>
+        <span class="item-edit">🖊️</span>
+        <span class="item-delete">❌</span>
+      </div>
+      <div class="files-row">
+        <a class="item file">5.mp4</a>
+        <span class="item-edit">🖊️</span>
+        <span class="item-delete">❌</span>
+      </div>
+      <div class="empty">
+        Здесь пусто
+      </div>
+    </div>
+  </div>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #1c1c2a;
+      color: rgb(239, 239, 239);
+      font-size: 20px;
+      font-family: 'Courier New', Courier, monospace;
+      user-select: none;
+    }
+
+    .container {
+      padding: 48px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      background-color: #4646be;
+      padding: 12px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color .2s ease-in;
+      font-size: 16px;
+    }
+
+    .btn:hover {
+      background-color: #3737b9;
+      transition: background-color .2s ease-out;
+    }
+
+    .files {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .home,
+    .back {
+      color: rgb(183, 238, 255);
+      font-weight: 600;
+    }
+
+    .files-row {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .files-row .item-edit,
+    .files-row .item-delete {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background-color: #131321;
+      cursor: pointer;
+      transition: background-color .2s ease-in;
+      border-radius: 0 12px 12px 0;
+      padding: 16px;
+    }
+
+    .files-row .item-edit {
+      border-radius: 0;
+    }
+
+    .files-row .item-edit:hover,
+    .files-row .item-delete:hover {
+      background-color: #14142b;
+      transition: background-color .2s ease-out;
+    }
+
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      background-color: #131321;
+      padding: 16px;
+      cursor: pointer;
+      transition: background-color .2s ease-in;
+      text-decoration: none;
+      color: rgb(239, 239, 239);
+      border-radius: 12px;
+    }
+
+    @media screen and (max-width: 500px) {
+      .item {
+        font-size: 16px;
+      }
+
+      .files-row .item-edit,
+      .files-row .item-delete {
+        padding: 4px;
+        border-radius: 5px;
+      }
+
+      .files-row {
+        gap: 5px;
+      }
+    }
+
+    .item:hover {
+      background-color: #14142b;
+      transition: background-color .2s ease-out;
+    }
+
+    .dir,
+    .file {
+      position: relative;
+      border-radius: 12px 0 0 12px;
+    }
+
+    .dir span.item-delte,
+    .file span.item-delte {
+      position: absolute;
+      right: 0;
+    }
+
+    .dir {
+      position: relative;
+    }
+
+    .dir::before {
+      content: '📁 ';
+    }
+
+    .file::before {
+      content: '💾 ';
+    }
+
+    .file {
+      font-weight: 600;
+      color: rgb(230, 117, 255);
+    }
+
+    .empty {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    #confirmationModal {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #090914;
+      width: 300px;
+      z-index: 5;
+      padding: 16px;
+      border-radius: 8px;
+      -webkit-box-shadow: 0px 0px 75px 100px rgba(0, 0, 0, 0.35);
+      -moz-box-shadow: 0px 0px 75px 100px rgba(0, 0, 0, 0.35);
+      box-shadow: 0px 0px 75px 100px rgba(0, 0, 0, 0.35);
+    }
+
+    #confirmationModal span {
+      display: block;
+      text-align: justify;
+      width: 100%;
+      margin-bottom: 16px;
+    }
+
+    #confirmationModal button {
+      width: 100%;
+      background-color: #4646be;
+      padding: 8px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      color: rgb(239, 239, 239);
+    }
+  </style>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const createFolderBtn = document.querySelector(".create-folder");
+      const uploadBtn = document.querySelector(".upload");
+      const fileInput = document.getElementById("fileInput");
+      const deleteButtons = document.querySelectorAll(".item-delete");
+      const confirmationModal = document.getElementById("confirmationModal");
+      const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+      const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
+      const editButtons = document.querySelectorAll(".item-edit");
+
+      let deleteTarget = null;
+      deleteButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          deleteTarget = btn.previousElementSibling.previousElementSibling; // The element to be deleted
+          confirmationModal.style.display = "block";
+        });
+      });
+
+      createFolderBtn.addEventListener("click", async () => {
+        console.log("Button clicked");
+
+        const newFolderName = prompt("Введите имя новой папки:");
+
+        if (newFolderName) {
+          const folderPath = window.location.pathname.replaceAll(' ', '+');
+          const response = await fetch("/create-folder", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              folderPath: folderPath,
+              newFolderName: newFolderName.replaceAll(' ', '+'),
+            }),
+          });
+
+          if (response.ok) {
+            console.log("Папка успешно создана");
+            location.reload();
+          } else {
+            console.error("Ошибка при создании папки");
+          }
+        }
+      });
+
+      uploadBtn.addEventListener("click", () => {
+        const folderPath = window.location.pathname.replaceAll(' ', '+');
+        fileInput.dataset.folderPath = folderPath;
+        fileInput.click();
+      });
+
+      fileInput.addEventListener("change", async () => {
+        const file = fileInput.files[0];
+        const folderPath = window.location.pathname.replaceAll(' ', '+');
+
+        if (file) {
+          const formData = new FormData();
+          formData.append("folderPath", folderPath);
+          formData.append("file", file);
+
+          const response = await fetch("/upload", {
+            method: "POST",
+            body: formData
+          });
+
+          if (response.ok) {
+            console.log("Файл успешно загружен");
+            location.reload();
+          } else {
+            console.error("Ошибка при загрузке файла");
+          }
+        }
+      });
+
+      confirmDeleteBtn.addEventListener("click", async () => {
+        const filePath = deleteTarget.getAttribute("href");
+        const response = await fetch("/delete", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ filePath }),
+        });
+
+        if (response.ok) {
+          console.log("Файл или папка успешно удалены");
+          location.reload();
+        } else {
+          console.error("Ошибка при удалении файла или папки");
+        }
+
+        confirmationModal.style.display = "none";
+      });
+
+      cancelDeleteBtn.addEventListener("click", () => {
+        deleteTarget = null;
+        confirmationModal.style.display = "none";
+      });
+
+      editButtons.forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const targetElement = btn.previousElementSibling;
+
+          const newName = prompt("Введите новое имя:", targetElement.textContent);
+
+          if (newName !== null && newName !== "") {
+            targetElement.textContent = newName;
+
+            const filePath = targetElement.getAttribute("href");
+            const response = await fetch("/update", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ filePath, newName }),
+            });
+
+            if (response.ok) {
+              console.log("Файл или папка успешно обновлены");
+            } else {
+              console.error("Ошибка при обновлении файла или папки");
+            }
+          }
+          location.reload();
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
