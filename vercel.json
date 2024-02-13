@@ -12,7 +12,7 @@
       "dest": "/files/$1"
     },
     {
-      "src": "/",
+      "src": "/(.*)",
       "dest": "index.js"
     }
   ]
