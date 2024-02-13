@@ -1,13 +1,20 @@
 {
   "version": 2,
-  "rewrites": [
-    { 
-      "source": "/", 
-      "destination": "/api"
+  "builds": [
+    {
+      "src": "index.js",
+      "use": "@now/node-server"
+    }
+  ],
+  "routes": [
+    { "handle": "filesystem" },
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
     },
-    { 
-      "source": "/files/(.*)", 
-      "destination": "/"
+    {
+      "src": "/(.*)",
+      "dest": "/index.js"
     }
   ]
 }
