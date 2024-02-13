@@ -37,7 +37,7 @@ const myServe = fs.readFileSync(
 const dom = new JSDOM(myServe);
 const document = dom.window.document;
 
-const listingPath = "files";
+const listingPath = "/";
 app.get("/files", (req, res) => {
   const filePath = path.join(listingPath, req.path);
   console.log(filePath)
