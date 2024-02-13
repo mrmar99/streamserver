@@ -38,7 +38,7 @@ const dom = new JSDOM(myServe);
 const document = dom.window.document;
 
 const listingPath = path.join(__dirname, "files");
-app.get("*", (req, res) => {
+app.get("/", (req, res) => {
   const filePath = path.join(listingPath, req.path);
 
   if (!fs.existsSync(filePath)) {
